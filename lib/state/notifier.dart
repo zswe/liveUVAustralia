@@ -17,7 +17,7 @@ import '../models/uv_rating.dart';
 //is called from StateNotifierProvider
 Future<List<UVRating>> retrieveUVData() async {
   //To handle offline persistence, specifically with the dropdown always include an empty UV Rating
-  List<UVRating> returnList = [returnEmptyUVRating()];
+  List<UVRating> returnList = [UVRating.returnEmptyUVRating()];
   var url = Uri.https('uvdata.arpansa.gov.au', '/xml/uvvalues.xml');
   try {
     await http.read(url).then(
@@ -26,7 +26,7 @@ Future<List<UVRating>> retrieveUVData() async {
         final locations =
             document.findElements('stations').first.findElements('location');
         for (final location in locations) {
-          returnList.add(uvRatingFromXML(location));
+          returnList.add(UVRating.uvRatingFromXML(location));
         }
       },
     );

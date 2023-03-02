@@ -50,6 +50,15 @@ class LocationSelectionModule extends ConsumerWidget {
             if (valID != null) {
               ref.read(selectedLocationIDState.notifier).state = valID;
               updateLocationPreferences(valID);
+              ref.watch(uvDataProvider.notifier).fetch().then((value) {
+                ref.read(uvScreenLoadingIndicatorState.notifier).state = false;
+
+                //If we receive back a false value it means we weren't able to retrieve any locations
+                //so update the location to be the default blank location
+                if (!value) {
+                  ref.read(selectedLocationIDState.notifier).state = '-';
+                }
+              });
             }
           }),
     );
